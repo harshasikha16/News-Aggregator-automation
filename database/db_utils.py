@@ -8,6 +8,11 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def add_article(article_data):
+    existing_article = session.query(Article).filter_by(url=article_data['url']).first()
+    if existing_article:
+        print(f"Skipped duplicate: {article_data['title']}")
+        return
+
     article = Article(
         title=article_data['title'],
         description=article_data['description'],
@@ -17,6 +22,4 @@ def add_article(article_data):
     )
     session.add(article)
     session.commit()
-
-def get_all_articles():
-    return session.query(Article).all()
+    print(f"Added: {article_data['title']}")

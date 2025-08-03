@@ -9,7 +9,7 @@ class Article(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
     description = Column(String)
-    url = Column(String)
+    url = Column(String, unique=True)
     published_at = Column(DateTime)
     source = Column(String)
 
