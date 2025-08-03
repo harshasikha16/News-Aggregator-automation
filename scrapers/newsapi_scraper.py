@@ -1,11 +1,5 @@
 import requests
-import sys
 import os
-from datetime import datetime
-
-# Fix: Ensure Python can locate the 'database' module
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from database.models import Base, engine
 from database.db_utils import add_article
 
@@ -13,12 +7,9 @@ from database.db_utils import add_article
 if not os.path.exists('news.db'):
     Base.metadata.create_all(engine)
 
-# Get category argument from CLI (default to general)
-category = sys.argv[1] if len(sys.argv) > 1 else "general"
-
 # NewsAPI Config
-API_KEY = '84175952cada4755bcd02b4336412205'  # <-- Replace this with your actual API key
-URL = f'https://newsapi.org/v2/top-headlines?country=us&category={category}&pageSize=20&apiKey={API_KEY}'
+API_KEY = '84175952cada4755bcd02b4336412205'  # <-- Replace with your actual API key
+URL = f'https://newsapi.org/v2/top-headlines?country=us&apiKey={API_KEY}'
 
 # Fetch News from API
 response = requests.get(URL)
@@ -34,7 +25,7 @@ for article in articles:
         'title': article['title'],
         'description': article.get('description', ''),
         'url': article['url'],
-        'publishedAt': article.get('publishedAt', datetime.utcnow().isoformat()),
+        'publishedAt': article.get('publishedAt', ''),
         'source': article['source']['name']
     }
 

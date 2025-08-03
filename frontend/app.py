@@ -27,20 +27,13 @@ session = Session()
 # ---- Fetch Articles from DB ----
 articles = session.query(Article).order_by(Article.published_at.desc()).all()
 
-# ---- Display Articles ----
-for article in articles:
-    st.markdown(f"""
-        <div class="news-card">
-            <div class="news-title">{article.title}</div>
-            <div class="news-description">{article.description}</div>
-            <div class="news-meta">{article.source} | {article.published_at.strftime('%Y-%m-%d %H:%M')}</div>
-            <a href="{article.url}" target="_blank">Read More</a>
-        </div>
-    """, unsafe_allow_html=True)
-
 # ---- CSS Styling ----
 st.markdown("""
     <style>
+        .custom-container {
+            padding: 20px;
+        }
+
         .news-card {
             background: white;
             border-radius: 12px;
@@ -66,3 +59,20 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+# ---- Container Div Start ----
+st.markdown('<div class="custom-container">', unsafe_allow_html=True)
+
+# ---- Render Articles Dynamically ----
+for article in articles:
+    st.markdown(f"""
+        <div class="news-card">
+            <div class="news-title">{article.title}</div>
+            <div class="news-description">{article.description}</div>
+            <div class="news-meta">{article.source} | {article.published_at.strftime('%Y-%m-%d %H:%M')}</div>
+            <a href="{article.url}" target="_blank">Read More</a>
+        </div>
+    """, unsafe_allow_html=True)
+
+# ---- Container Div End ----
+st.markdown('</div>', unsafe_allow_html=True)
