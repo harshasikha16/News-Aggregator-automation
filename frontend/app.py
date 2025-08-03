@@ -27,52 +27,17 @@ session = Session()
 # ---- Fetch Articles from DB ----
 articles = session.query(Article).order_by(Article.published_at.desc()).all()
 
-# ---- CSS Styling ----
-st.markdown("""
-    <style>
-        .custom-container {
-            padding: 20px;
-        }
-
-        .news-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .news-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .news-description {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .news-meta {
-            font-size: 12px;
-            color: gray;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# ---- Container Div Start ----
-st.markdown('<div class="custom-container">', unsafe_allow_html=True)
-
-# ---- Render Articles Dynamically ----
+# ---- Display Articles ----
 for article in articles:
     st.markdown(f"""
-        <div class="news-card">
-            <div class="news-title">{article.title}</div>
-            <div class="news-description">{article.description}</div>
-            <div class="news-meta">{article.source} | {article.published_at.strftime('%Y-%m-%d %H:%M')}</div>
-            <a href="{article.url}" target="_blank">Read More</a>
+        <div style="margin-bottom: 40px;">
+            <h3>{article.title}</h3>
+            <p>{article.description}</p>
+            <a href="{article.url}" target="_blank">🔗 Read More</a>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: gray;">
+                <div><b>Source:</b> {article.source}</div>
+                <div><b>Published At:</b> {article.published_at.strftime('%Y-%m-%d %H:%M')}</div>
+            </div>
+            <hr style="margin-top: 20px;">
         </div>
     """, unsafe_allow_html=True)
-
-# ---- Container Div End ----
-st.markdown('</div>', unsafe_allow_html=True)
