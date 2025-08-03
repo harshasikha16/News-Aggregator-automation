@@ -21,7 +21,8 @@ st.title("📰 News Aggregator Dashboard")
 if st.button("🔄 Refresh News"):
     with st.spinner("Fetching latest news..."):
         subprocess.run(["python", "scrapers/newsapi_scraper.py"])
-    st.success("News updated!")
+    st.experimental_rerun()  
+
 
 # Fetch and display articles
 articles = session.query(Article).order_by(Article.published_at.desc()).all()
