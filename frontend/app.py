@@ -31,8 +31,15 @@ session = get_session()
 articles = session.query(Article).order_by(Article.published_at.desc()).all()
 
 for article in articles:
-    st.subheader(article.title)
-    st.write(article.description)
-    st.markdown(f"[Read More]({article.url})", unsafe_allow_html=True)
-    st.write(f"Source: {article.source} | Published At: {article.published_at}")
-    st.write("---")
+    with st.container():
+        st.markdown(f"### {article.title}")
+        st.write(article.description)
+        st.markdown(f"[🔗 Read More]({article.url})", unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"**Source:** {article.source}")
+        with col2:
+            st.markdown(f"**Published At:** {article.published_at.strftime('%Y-%m-%d %H:%M')}")
+
+        st.markdown("---")
