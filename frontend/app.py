@@ -34,7 +34,7 @@ for article in articles:
         <style>
             .header {
                 text-align: center;
-                margin-bottom: 30px;
+                margin-block-end: 30px;
             }
             .header h1 {
                 font-size: 2.5rem;
@@ -45,10 +45,6 @@ for article in articles:
                 color: #666;
             }
         </style>
-        <div class="header">
-            <h1>📰 News Aggregator Dashboard</h1>
-            <p>Your one-stop destination for the latest news</p>
-        </div>
     """, unsafe_allow_html=True)
 
     # ---- Display Articles in Grid Format ----
@@ -86,7 +82,7 @@ for article in articles:
             .grid-item .meta {
                 font-size: 0.8rem;
                 color: gray;
-                margin-top: 10px;
+                margin-block-start: 10px;
                 display: flex;
                 justify-content: space-between;
             }
