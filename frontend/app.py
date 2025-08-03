@@ -9,6 +9,28 @@ import subprocess
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from database.models import Article
 
+# ----- Custom CSS Styling -----
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f7f9fc;
+    }
+    .stButton button {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+    .news-card {
+        background-color: white;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Setup DB connection (DO NOT keep session global)
 engine = create_engine('sqlite:///news.db')
 
