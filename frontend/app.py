@@ -44,7 +44,8 @@ st.title("📰 News Aggregator Dashboard")
 if st.button("🔄 Refresh News"):
     with st.spinner("Fetching latest news..."):
         subprocess.run(["python", "scrapers/newsapi_scraper.py"])
-    st.experimental_rerun()
+    st.rerun()
+
 
 # Create a new session every time the page runs
 session = get_session()
