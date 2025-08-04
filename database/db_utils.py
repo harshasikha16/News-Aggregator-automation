@@ -1,25 +1,33 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
 from database.models import Article
-from datetime import datetime
+from sqlalchemy.orm import sessionmaker
+from database.models import engine
 
-engine = create_engine('sqlite:///news.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def add_article(article_data):
-    existing_article = session.query(Article).filter_by(url=article_data['url']).first()
+def add_article(news_item):
+    # Check if article with same URL exists
+    existing_article = session.query(Article).filter_by(url=news_item['url']).first()
     if existing_article:
-        print(f"Skipped duplicate: {article_data['title']}")
-        return
-
-    article = Article(
-        title=article_data['title'],
-        description=article_data['description'],
-        url=article_data['url'],
-        published_at=datetime.fromisoformat(article_data['publishedAt'].replace('Z', '+00:00')),
-        source=article_data['source']
-    )
-    session.add(article)
-    session.commit()
-    print(f"Added: {article_data['title']}")
+        # Update existing article
+        existing_article.title = news_item['title']
+        existing_article.description = news_item['description']
+        existing_article.published_at = news_item['publishedAt']
+        existing_article.source = news_item['source']
+    else:
+        # Add new article
+        article = Article(
+            title=news_item['title'],
+            description=news_item['description'],
+            url=news_item['url'],
+            published_at=news_item['publishedAt'],
+            source=news_item['source']
+        )
+        session.add(article)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+        print(f"Failed to add article: {news_item['title']}")
+        
