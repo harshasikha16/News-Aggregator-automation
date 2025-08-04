@@ -13,6 +13,5 @@ class Article(Base):
     published_at = Column(DateTime)
     source = Column(String)
 
-# Create SQLite DB (news.db)
+# Database engine setup (but do not create tables here)
 engine = create_engine('sqlite:///news.db')
-Base.metadata.create_all(engine)
