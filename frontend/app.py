@@ -18,7 +18,7 @@ if st.button("🔄 Refresh News"):
     with st.spinner("Fetching latest news..."):
         result = subprocess.run(["python", "scrapers/newsapi_scraper.py"], capture_output=True, text=True)
         st.write(result.stdout)  # Optional: Show logs
-    st.experimental_rerun()  # Force full app rerun after scraper finishes
+    st.rerun()  # Force full app rerun after scraper finishes
 
 # ---- DB Connection ----
 engine = create_engine('sqlite:///news.db', echo=False)
