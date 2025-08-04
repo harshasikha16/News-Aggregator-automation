@@ -51,6 +51,10 @@ from database.models import Base, engine, Article
 from database.db_utils import add_article
 from sqlalchemy.orm import sessionmaker
 
+if os.path.exists('news.db'):
+    os.remove('news.db')
+    print("Deleted existing news.db")
+
 # Ensure DB exists
 if not os.path.exists('news.db'):
     Base.metadata.create_all(engine)
