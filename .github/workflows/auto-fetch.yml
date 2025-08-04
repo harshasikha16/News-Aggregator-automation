@@ -2,36 +2,36 @@ name: Auto Fetch News
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour (UTC)
-  workflow_dispatch:  # Allows manual run from GitHub Actions UI
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:      # Manual trigger button
 
 jobs:
-  fetch-news:
+  fetch-and-commit:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # <-- IMPORTANT for push access
+
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
 
-    - name: Run News Scraper
-      run: |
-        python scrapers/newsapi_scraper.py
+      - name: Run News Scraper
+        run: python scrapers/newsapi_scraper.py
 
-    - name: Commit & Push Changes
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add news.db
-        git commit -m "Auto-fetch latest news"
-        git push
-      continue-on-error: true  # Avoid failure if no new articles
+      - name: Commit & Push Changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add news.db
+          git commit -m "Auto-fetch latest news" || echo "No changes to commit"
+          git push origin main
